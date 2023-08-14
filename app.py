@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL') or 'postgresql://your_username:your_password@localhost/your_database_name'
+DATABASE_URL = os.environ.get('DATABASE_URL').replace("postgres://", "postgresql://")
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
