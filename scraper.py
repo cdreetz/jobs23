@@ -1,5 +1,5 @@
 import json
-from scrapers.Bot import Bot
+from Bot import Bot
 from selenium.webdriver.common.by import By
 from time import sleep
 import itertools
@@ -7,6 +7,7 @@ import urllib
 from selenium.common.exceptions import NoSuchElementException
 import os
 from random import shuffle
+from app import db, Job
 
 
 class StackScraper(Bot):
@@ -26,7 +27,7 @@ class StackScraper(Bot):
             "facebook",
             "tesla",
             "amazon",
-            "UT Health Science Center at San Antonio",
+            #"UT Health Science Center at San Antonio",
             #"HEB"
         ]
         shuffle(role_names)
@@ -100,8 +101,8 @@ class StackScraper(Bot):
     
     def save_job(self, job, role_name, company):
         # Check if job already exists in the database
-        existing_job = Job.query.filter_by(job_id=job["id"]).first()
-        
+        existing_job = Job.query.filter_by(company=company, role_name=role_name).first()
+
         if not existing_job:
             new_job = Job(
                 job_id=job["id"],
@@ -115,8 +116,10 @@ class StackScraper(Bot):
 
 
 if __name__ == '__main__':
-    StackScraper()
-        
+    from app import app
+    with app.app_context():
+        StackScraper()
+
 
         
     
