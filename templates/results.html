@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Comparison Results</title>
+</head>
+<body>
+    <h2>Your Skills Analysis:</h2>
+    <p>You have {{ user_top_skills_count }} out of the top {{ total_top_skills }} skills demanded in the market.</p>
+    <p>Your top skills are: {{ user_top_skills|join(', ') }}</p>
+    <a href="/input-skills">Check Again</a>
+</body>
+</html>

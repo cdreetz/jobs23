@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Input</title>
+</head>
+<body>
+    <form action="/compare-skills" method="post">
+        {% for skill in skills %}
+        <input type="checkbox" name="skills" value="{{ skill.skill_name }}"> {{ skill.skill_name }}<br>
+        {% endfor %}
+        <input type="submit" value="Compare">
+    </form>
+</body>
+</html>
