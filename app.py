@@ -1,11 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, jsonify
-
+import os
 
 app = Flask(__name__)
 
-# Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:topromen@localhost/jobs_db'
+
+DATABASE_URL = os.environ.get('DATABASE_URL') or 'postgresql://your_username:your_password@localhost/your_database_name'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
 # Database models
