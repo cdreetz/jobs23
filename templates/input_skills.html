@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills Input</title>
+    <title>Select Your Skills</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+rel="stylesheet">
 </head>
 <body>
-    <form action="/compare-skills" method="post">
-        {% for skill in skills %}
-        <input type="checkbox" name="skills" value="{{ skill.skill_name }}"> {{ skill.skill_name }}<br>
-        {% endfor %}
-        <input type="submit" value="Compare">
-    </form>
+    <div class="container">
+        <h1>Select Your Skills</h1>
+        <p>Choose your skills from the list below and see how they compare with job 
+requirements.</p>
+        <form action="/compare-skills" method="post">
+            <div class="form-group">
+                <label for="skills">Skills:</label><br>
+                {% for skill in skills %}
+                <input type="checkbox" id="{{ skill.skill_name }}" name="skills" value="{{ 
+skill.skill_name }}">
+                <label for="{{ skill.skill_name }}">{{ skill.skill_name }}</label><br>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary">Compare</button>
+        </form>
+    </div>
 </body>
 </html>
+

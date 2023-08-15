@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare Skills</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Compare Your Skills</h1>
+        <p>Select your skills from the list below and see how they match with job 
+requirements.</p>
+        <form action="/compare-results" method="post">
+            <div class="form-group">
+                <label for="skills">Select Skills:</label>
+                <select multiple class="form-control" id="skills" name="skills">
+                    <!-- The skills can be dynamically populated from the database or a 
+predefined list -->
+                    <option value="Python">Python</option>
+                    <option value="SQL">SQL</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                    <!-- ... Add other skills ... -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Compare</button>
+        </form>
+    </div>
+</body>
+</html>
+

@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for. redirect
 import os
 
 app = Flask(__name__)
@@ -81,8 +81,11 @@ def input_skills():
 
 @app.route('/')
 def index():
-    jobs = Job.query.all()  # Assuming you have already defined the Job model
-    return render_template('index.html', jobs=jobs)
+    return redirect(url_for('input_skills'))
+
+
+#    jobs = Job.query.all()  # Assuming you have already defined the Job model
+#    return render_template('index.html', jobs=jobs)
 
 
 
