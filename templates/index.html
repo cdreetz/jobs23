@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <title>Job Listings</title>
+</head>
+<body>
+    <h1>Available Jobs</h1>
+    <ul>
+        {% for job in jobs %}
+            <li>
+                <strong>Role:</strong> {{ job.role_name }} <br>
+                <strong>Company:</strong> {{ job.company_name }} <br>
+                <strong>Description:</strong> {{ job.description }} <br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
