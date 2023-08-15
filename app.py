@@ -81,7 +81,9 @@ def input_skills():
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    jobs = Job.query.all()  # Assuming you have already defined the Job model
+    return render_template('index.html', jobs=jobs)
+
 
 
 

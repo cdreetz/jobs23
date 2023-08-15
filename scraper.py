@@ -99,15 +99,15 @@ class StackScraper(Bot):
         # By.XPATH "div/div/div/div/div/span[@class=']".text
         return description
     
-    def save_job(self, job, role_name, company):
+    def save_job(self, job, role_name, company_name):
         # Check if job already exists in the database
-        existing_job = Job.query.filter_by(company=company, role_name=role_name).first()
+        existing_job = Job.query.filter_by(company_name=company_name, role_name=role_name).first()
 
         if not existing_job:
             new_job = Job(
                 job_id=job["id"],
                 role_name=role_name,
-                company_name=company,
+                company_name=company_name,
                 description=job["description"]
             )
             db.session.add(new_job)
