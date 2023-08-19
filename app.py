@@ -1,54 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, jsonify, url_for, redirect
+from sqlalchemy.exc import SQLAlchemyError
+from models import Job, Skill, db
+from models import app
 import os
-
-app = Flask(__name__)
-
-
-DATABASE_URL_RAW = os.environ.get('DATABASE_URL')
-DATABASE_URL = DATABASE_URL_RAW.replace("postgres://", "postgresql://") if DATABASE_URL_RAW else None
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-db = SQLAlchemy(app)
-
-# Database models
-class Job(db.Model):
-    job_id = db.Column(db.String, primary_key=True)
-    role_name = db.Column(db.String, nullable=False)
-    company_name = db.Column(db.String, nullable=False)
-    description = db.Column(db.Text, nullable=True)
-
-class Skill(db.Model):
-    skill_id = db.Column(db.Integer, primary_key=True)
-    skill_name = db.Column(db.String, nullable=False)
-    mention_count = db.Column(db.Integer, default=0)
-
-
-# List of potential skills - this can be expanded upon
-SKILLS = [
-    "python", "r", "sql", "machine learning", "deep learning", "tensorflow", 
-    "pytorch", "tableau", "excel", "big data", "hadoop", "spark", "statistics", 
-    "nlp", "natural language processing", "computer vision"
-]
-
-def extract_skills_from_description(description):
-    for skill in SKILLS:
-        if skill in description.lower():
-            # Check if skill already exists in the database
-            skill_entry = Skill.query.filter_by(skill_name=skill).first()
-            if skill_entry:
-                skill_entry.mention_count += 1
-            else:
-                new_skill = Skill(skill_name=skill, mention_count=1)
-                db.session.add(new_skill)
-            db.session.commit()
-
-
-
-
-
-
-
-
 
 
 @app.route('/skills', methods=['GET'])
@@ -75,21 +30,19 @@ def compare_skills():
 
 @app.route('/input-skills', methods=['GET'])
 def input_skills():
-    skills = Skill.query.all()
-    return render_template('input_skills.html', skills=skills)
+    try:
+        skills = Skill.query.all()
+        if not skills: 
+            print("No skills found in the database")
+        return render_template('input_skills.html', skills=skills)
+    except SQLAlchemyError as e:
+        print(f"Error querying the database: {e}")
+        return "Error fetching skills from the database", 500     
 
 
 @app.route('/')
 def index():
     return redirect(url_for('input_skills'))
-
-
-#    jobs = Job.query.all()  # Assuming you have already defined the Job model
-#    return render_template('index.html', jobs=jobs)
-
-
-
-
 
 
 with app.app_context():
