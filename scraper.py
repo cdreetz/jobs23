@@ -7,7 +7,7 @@ import urllib
 from selenium.common.exceptions import NoSuchElementException
 import os
 from random import shuffle
-from app import db, Job
+from app2 import db, Job
 
 
 class StackScraper(Bot):
@@ -49,16 +49,17 @@ class StackScraper(Bot):
         sleep(1)
         for idx, listing in enumerate(listings):
             self.scroll_into_view(listing)
-            # id = listing.find_element(By.XPATH, '..').get_attribute("data-ved")
-            # print(id)
-            listing.click()
-            # print("Click listing")
-            sleep(0.5)
+
             try:
+                listing.click()
+                sleep(0.5)
                 job = self._get_job()
-            except:
+                self.save_job(job, role_name, company)
+
+            except (NoSuchElementException, selenium.common.exceptions.ElementClickInterceptedException) as e:
+                print(f"Error while processing listing {idx}: {e}")
                 continue
-            self.save_job(job, role_name, company)
+
 
     def scroll_into_view(self, element):
         try:
@@ -68,6 +69,7 @@ class StackScraper(Bot):
                 
         
     def _get_job(self):
+        print("Getting job details")
         return {
             "id": self._get_job_id(),
             "company": self._get_company(),
@@ -103,10 +105,18 @@ class StackScraper(Bot):
         return description
     
     def save_job(self, job, role_name, company_name):
-        # Check if job already exists in the database
-        existing_job = Job.query.filter_by(company_name=company_name, role_name=role_name).first()
+        try:
+            # Check if job already exists in the database
+            existing_job = Job.query.filter_by(job_id=job["id"]).first()
 
-        if not existing_job:
+            if existing_job:
+                if self.verbose:
+                    print(f"Job ID: {job['id']} already exists. Skipping...")
+                return  # if job already exists, just return and continue on
+
+            if self.verbose:
+                print(f"Saving job: {job['id']} - {role_name} at {company_name}")
+
             new_job = Job(
                 job_id=job["id"],
                 role_name=role_name,
@@ -116,10 +126,20 @@ class StackScraper(Bot):
             db.session.add(new_job)
             db.session.commit()
 
+        except IntegrityError:  
+            db.session.rollback()  # Rollback the session to a clean state
+            if self.verbose:
+                print(f"Integrity error occurred while saving job {job['id']}. Job might already exist or another constraint was violated.")
+
+        except Exception as e:  # Catching generic exception for any other unexpected errors
+            if self.verbose:
+                print(f"Error occurred while saving job {job['id']}. Error: {e}")
+
+
 
 
 if __name__ == '__main__':
-    from app import app
+    from app2 import app
     with app.app_context():
         StackScraper()
 

@@ -1,11 +1,13 @@
-from models import db, Job, Skill, JobSkillAssociation, CompanySkillAssociation
-from flask import current_app as app
-from models import app
+from app2 import app, db, Job, Skill, JobSkillAssociation 
+
 
 SKILLS = [
     "python", "r", "sql", "machine learning", "deep learning", "tensorflow",
-    "pytorch", "tableau", "excel", "big data", "hadoop", "spark", "statistics",
-    "nlp", "natural language processing", "computer vision"
+    "pytorch", "tableau", "excel", "hadoop", "spark", "statistical modeling",
+    "nlp", "natural language processing", "computer vision", "algorithms",
+    "sas", "scala", "java", "c++", "power bi", "phd", "master's", "spss", "github",
+    "time series", "numpy", "matplotlib", "agile", "data engineering", "gcp", "aws",
+    "pandas", "multivariate", "data mining"
 ]
 
 def initialize_skills_table():
@@ -50,11 +52,11 @@ def update_skill_counts():
                 job_association.count += 1
 
                 # Company-Specific Count
-                company_association = CompanySkillAssociation.query.filter_by(company_name=job.company_name, skill_id=skill_entry.skill_id).first()
-                if not company_association:
-                    company_association = CompanySkillAssociation(company_name=job.company_name, skill_id=skill_entry.skill_id, count=0)
-                    db.session.add(company_association)
-                company_association.count += 1
+                #company_association = CompanySkillAssociation.query.filter_by(company_name=job.company_name, skill_id=skill_entry.skill_id).first()
+                #if not company_association:
+                #    company_association = CompanySkillAssociation(company_name=job.company_name, skill_id=skill_entry.skill_id, count=0)
+                #    db.session.add(company_association)
+                #company_association.count += 1
                 
     db.session.commit()
 
