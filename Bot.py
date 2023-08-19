@@ -14,7 +14,7 @@ import os
 import requests
 from atexit import register
 
-max_time = 10 
+max_time = 20 
 
 def open_chrome(on_mac=True):
     my_env = os.environ.copy()

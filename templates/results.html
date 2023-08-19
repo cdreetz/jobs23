@@ -1,16 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+{% extends 'base.html' %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills Comparison Results</title>
-</head>
-<body>
-    <h2>Your Skills Analysis:</h2>
-    <p>You have {{ user_top_skills_count }} out of the top {{ total_top_skills }} skills demanded in the market.</p>
-    <p>Your top skills are: {{ user_top_skills|join(', ') }}</p>
-    <a href="/input-skills">Check Again</a>
-</body>
-</html>
+{% block content %}
+<div class="mt-5">
+    <h2 class="mb-3">Your Skills Scores</h2>
+    <ul class="list-group mb-5">
+        {% for skill, score in chosen_skills.items() %}
+        <li class="list-group-item">{{ skill }}: {{ score }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2 class="mb-3">Top 10 Skills for {{ role_name }}</h2>
+    <ul class="list-group">
+        {% for skill in top_skills %}
+        <li class="list-group-item">{{ skill[0] }}: {{ skill[1] }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

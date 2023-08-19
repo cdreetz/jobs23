@@ -24,9 +24,12 @@ class StackScraper(Bot):
             "apple",
             "google",
             "microsoft",
-            "facebook",
+            "meta",
             "tesla",
             "amazon",
+            "heb",
+            "usaa",
+            "frost",
             #"UT Health Science Center at San Antonio",
             #"HEB"
         ]
@@ -120,8 +123,3 @@ if __name__ == '__main__':
     with app.app_context():
         StackScraper()
 
-
-        
-    
-
-        
