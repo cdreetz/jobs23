@@ -2,6 +2,19 @@
 
 {% block content %}
 <div class="mt-5">
+
+    <!-- New informational section about results -->
+    <section id="results-info-section" class="mb-4">
+        <h2 class="text-center">Understanding Your Results</h2>
+        <p class="lead text-center">
+            The scores below represent how closely your skills align with the selected role, represented as a proportion of the jobs that require that skill compared to the total number of job posts for that specific role. A higher score indicates a closer match. Additionally, you can view the top 10 skills most essential for the role to further refine your skill set.
+        </p>
+        <p class="lead text-center">
+            For example, a skill that has a score of 0.60 is a pretty good skill since 60 out of 100 of those jobs require it, but a skill with a score of 0.02 means that only 2 out of every 100 of the jobs ask for the skill so it's probably not that important.
+        </p>
+    </section>
+
+    <!-- Your original content -->
     <h2 class="mb-3">Your Skills Scores</h2>
     <ul class="list-group mb-5">
         {% for skill, score in chosen_skills.items() %}
@@ -17,4 +30,3 @@
     </ul>
 </div>
 {% endblock %}
-

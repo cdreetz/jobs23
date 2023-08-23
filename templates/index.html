@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<section id="info-section" class="mb-4">
+    <h1 class="mt-5 mb-3 text-center">Skills Comparison Tool</h1>
+    <p class="lead text-center">This tool allows you to compare various skill sets and understand the nuances between different job roles. Navigate through the tool below to get started.</p>
+    <p class="lead text-center">This information is provided with little to no opinions on what one might think are important skills, but rather a direct representation of important skills taken from the requirements stated in job descriptions on Google.</p>
+    <p class="lead text-center">The results are the product of a collection of hundred of job postings and their descriptions stored in our database.  When you select a specific role the information on skill relevancy will be specific to the jobs with that title.</p>
+
+</section>
+
 <form action="/get_skills_score" method="post" class="mt-5">
     <div class="form-group">
         <label for="role">Choose a role:</label>
