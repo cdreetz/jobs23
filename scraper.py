@@ -7,7 +7,7 @@ import urllib
 from selenium.common.exceptions import NoSuchElementException
 import os
 from random import shuffle
-from app2 import db, Job
+import csv
 
 
 class StackScraper(Bot):
@@ -105,41 +105,34 @@ class StackScraper(Bot):
         return description
     
     def save_job(self, job, role_name, company_name):
-        try:
-            # Check if job already exists in the database
-            existing_job = Job.query.filter_by(job_id=job["id"]).first()
+        csv_file_path = 'jobs.csv'
+        fieldnames = ['job_id', 'role_name', 'company_name', 'description']
 
-            if existing_job:
-                if self.verbose:
-                    print(f"Job ID: {job['id']} already exists. Skipping...")
-                return  # if job already exists, just return and continue on
+        try:
+            if os.path.exists(csv_file_path):
+                with open(csv_file_path, mode='r', newline='', encoding='utf-8') as file:
+                    reader = csv.DictReader(file)
+                    if any(row['job_id'] == job["id"] for row in reader):
+                        if self.verbose:
+                            print(f"Job ID: {job['id']} already exists")
+                        return
 
             if self.verbose:
                 print(f"Saving job: {job['id']} - {role_name} at {company_name}")
 
-            new_job = Job(
-                job_id=job["id"],
-                role_name=role_name,
-                company_name=company_name,
-                description=job["description"]
-            )
-            db.session.add(new_job)
-            db.session.commit()
+            with open(csv_file_path, mode='a', newline='', encoding='utf-8') as file:
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                if file.tell() == 0:
+                    writer.writeheader()
+                writer.writerow({'job_id': job["id"], 'role_name': role_name, 'company_name': company_name, 'description': job["description"]})
 
-        except IntegrityError:  
-            db.session.rollback()  # Rollback the session to a clean state
+        except Exception as e:
             if self.verbose:
-                print(f"Integrity error occurred while saving job {job['id']}. Job might already exist or another constraint was violated.")
-
-        except Exception as e:  # Catching generic exception for any other unexpected errors
-            if self.verbose:
-                print(f"Error occurred while saving job {job['id']}. Error: {e}")
+                print(f"Error occured while saving job {job['id']} to csv. Error: {e}")
 
 
 
 
 if __name__ == '__main__':
-    from app2 import app
-    with app.app_context():
-        StackScraper()
+    StackScraper()
 

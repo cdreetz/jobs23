@@ -16,17 +16,19 @@ from atexit import register
 
 max_time = 20 
 
-def open_chrome(on_mac=True):
-    my_env = os.environ.copy()
-    if on_mac:
-        print('opening chrome (Mac)')
-        subprocess.Popen(['open', '-a', "Google Chrome", "--args",
-                          f'--remote-debugging-port', 'http://www.example.com'])  # , env=venv)
-    else:
-        print('opening chrome (Linux)')
-        subprocess.Popen(
-            f'google-chrome --remote-debugging-port={port} --user-data-dir=data_dir'.split(), env=venv)
-    print('opened chrome')
+def open_chrome():
+    try:
+        if sys.platform == 'win32':
+            # For Windows
+            subprocess.Popen(['start', 'chrome'], shell=True)
+        elif sys.platform == 'darwin':
+            # For macOS
+            subprocess.Popen(['open', '-a', "Google Chrome"])
+        else:
+            # For Linux or other OS
+            print("OS not supported for opening Chrome automatically.")
+    except Exception as e:
+        print(f"Error occurred while opening Chrome: {e}")
 
 class Bot():
     def __init__(self, headless=False, verbose=False):
